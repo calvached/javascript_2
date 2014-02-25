@@ -10,6 +10,13 @@ get '/board' do
   erb :board
 end
 
+post '/board' do
+  game = Game.create(winner: params[:winner],
+              elapsed_time: params[:elapsed_time])
+  p game.racers.create(player_id: session[:player_one])
+  p game.racers.create(player_id: session[:player_two])
+end
+
 post '/' do
   player = Player.find_or_create_by(username: params[:username])
   if player

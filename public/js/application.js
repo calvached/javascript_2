@@ -3,7 +3,6 @@ $(document).ready(function() {
   $('#add_player_one').on('submit', function (event) {
     event.preventDefault();
     playerOne = $('input[name=username]').val();
-    console.log(playerOne);
     var url = $(this).attr('action');
     var data = $(this).serialize();
 
@@ -13,28 +12,22 @@ $(document).ready(function() {
     $(this).hide();
 
     $.get('/sign_in_player_two', function(serverResponse, status, request) {
-      // console.log(serverResponse);
       $('.container').append(serverResponse);
 
-      $('#add_player_two').on('submit', function (e) {
-        e.preventDefault();
-        // console.log(this);
-        // console.log(serverResponse);
+      $('#add_player_two').on('submit', function (event) {
+        event.preventDefault();
 
         var url = $(this).attr('action');
-        console.log('Url info here:');
-        console.log(url);
         playerTwo = $(this.username).val();
 
         var data = $(this).serialize();
 
         $.post(url, data, function(serverResponse, status, request) {
           $('.container').html(serverResponse);
-        })
 
+        })
       })
     })
-
   })
 
   var initialTime = Date.now();
@@ -48,12 +41,15 @@ $(document).ready(function() {
         $(currentPositionOne).next().addClass("active");
           if ((currentPositionOne.next().length) === 0) {
             endTime = Date.now();
-            console.log((endTime - initialTime)/1000);
+            var elapsedTime = (endTime - initialTime)/1000;
+            var winner = playerOne;
             $('#winner_one').removeClass('display-none');
             $(currentPositionTwo).removeClass("active");
-            var winner = playerOne;
 
-            console.log(winner);
+            var data = {winner: playerOne, elapsed_time: elapsedTime}
+            $.post('/board', data, function(serverResponse, status, request) {
+              console.log(data);
+            })
 
             $('#play-again').html("<button id='play'>Play again?</button>");
               $('#play').on('click', function() {
@@ -69,12 +65,15 @@ $(document).ready(function() {
         $(currentPositionTwo).next().addClass("active");
           if ((currentPositionTwo.next().length) === 0) {
             endTime = Date.now();
-            console.log((endTime - initialTime)/1000);
+            var elapsedTime = (endTime - initialTime)/1000;
+            var winner = playerTwo;
             $('#winner_two').removeClass('display-none');
             $(currentPositionOne).removeClass("active");
-            var winner = playerTwo;
 
-            console.log(winner);
+            var data = {winner: playerTwo, elapsed_time: elapsedTime}
+            $.post('/board', data, function(serverResponse, status, request) {
+              console.log(data);
+            })
 
             $('#play-again').html("<button id='play'>Play again?</button>");
               $('#play').on('click', function() {
