@@ -11,7 +11,6 @@ get '/board' do
 end
 
 post '/' do
-  p params[:username]
   player = Player.find_or_create_by(username: params[:username])
   if player
     session[:player_one] = player.id
@@ -29,7 +28,6 @@ get '/sign_in_player_two' do
 end
 
 post '/sign_in_player_two' do
-  p params
   player = Player.find_or_create_by(username: params[:username])
   if player
     session[:player_two] = player.id

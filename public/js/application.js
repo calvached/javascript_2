@@ -3,28 +3,30 @@ $(document).ready(function() {
   $('#add_player_one').on('submit', function (event) {
     event.preventDefault();
     playerOne = $('input[name=username]').val();
+    console.log(playerOne);
     var url = $(this).attr('action');
     var data = $(this).serialize();
-
-    $(this).hide();
 
     $.post(url, data, function(serverResponse, status, request) {
     })
 
+    $(this).hide();
+
     $.get('/sign_in_player_two', function(serverResponse, status, request) {
-      console.log(serverResponse);
+      // console.log(serverResponse);
       $('.container').append(serverResponse);
 
       $('#add_player_two').on('submit', function (e) {
         e.preventDefault();
-        console.log(this);
-        console.log(serverResponse);
+        // console.log(this);
+        // console.log(serverResponse);
 
         var url = $(this).attr('action');
-        playerTwo = $('input[name=username]').val();
-        var data = $(this).serialize();
-        console.log(data);
+        console.log('Url info here:');
         console.log(url);
+        playerTwo = $(this.username).val();
+
+        var data = $(this).serialize();
 
         $.post(url, data, function(serverResponse, status, request) {
           $('.container').html(serverResponse);
@@ -46,10 +48,13 @@ $(document).ready(function() {
         $(currentPositionOne).next().addClass("active");
           if ((currentPositionOne.next().length) === 0) {
             endTime = Date.now();
-            console.log(initialTime - endTime);
+            console.log((endTime - initialTime)/1000);
             $('#winner_one').removeClass('display-none');
             $(currentPositionTwo).removeClass("active");
             var winner = playerOne;
+
+            console.log(winner);
+
             $('#play-again').html("<button id='play'>Play again?</button>");
               $('#play').on('click', function() {
                 $('#winner_one').addClass('display-none');
@@ -68,6 +73,9 @@ $(document).ready(function() {
             $('#winner_two').removeClass('display-none');
             $(currentPositionOne).removeClass("active");
             var winner = playerTwo;
+
+            console.log(winner);
+
             $('#play-again').html("<button id='play'>Play again?</button>");
               $('#play').on('click', function() {
                 $('#winner_two').addClass('display-none');
