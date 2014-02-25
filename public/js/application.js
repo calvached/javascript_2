@@ -24,13 +24,12 @@ $(document).ready(function() {
 
         $.post(url, data, function(serverResponse, status, request) {
           $('.container').html(serverResponse);
-
+            initialTime = Date.now();
         })
       })
     })
   })
 
-  var initialTime = Date.now();
 
   $(document).on("keyup", function(event) {
     var currentPositionOne = $("#player1_strip").find(".active");
@@ -48,15 +47,29 @@ $(document).ready(function() {
 
             var data = {winner: playerOne, elapsed_time: elapsedTime}
             $.post('/board', data, function(serverResponse, status, request) {
-              console.log(data);
+              gameId = serverResponse;
             })
 
             $('#play-again').html("<button id='play'>Play again?</button>");
               $('#play').on('click', function() {
+                // initialTime = Date.now();
                 $('#winner_one').addClass('display-none');
                 $('#play').hide();
                 $('#player1_strip td:first-child').addClass("active");
                 $('#player2_strip td:first-child').addClass("active");
+                $('#view-stats').hide();
+              });
+
+            $('#view-stats').html("<button id='view'>View game stats</button>");
+              $('#view').on('click', function() {
+                console.log(gameId);
+
+                $.get('/view_stats/' + gameId, function(serverResponse, status, request){
+                  console.log(serverResponse);
+                  $('#view-stats').html(serverResponse);
+                  $('#view').hide();
+                });
+
               });
           }
         }
@@ -72,7 +85,7 @@ $(document).ready(function() {
 
             var data = {winner: playerTwo, elapsed_time: elapsedTime}
             $.post('/board', data, function(serverResponse, status, request) {
-              console.log(data);
+              // console.log(data);
             })
 
             $('#play-again').html("<button id='play'>Play again?</button>");
