@@ -6,8 +6,7 @@ $(document).ready(function() {
     var url = $(this).attr('action');
     var data = $(this).serialize();
 
-    $.post(url, data, function(serverResponse, status, request) {
-    })
+    $.post(url, data)
 
     $(this).hide();
 
@@ -24,11 +23,11 @@ $(document).ready(function() {
 
         $.post(url, data, function(serverResponse, status, request) {
           $('.container').html(serverResponse);
-            initialTime = Date.now();
         })
       })
     })
   })
+            initialTime = Date.now();
 
 
   $(document).on("keyup", function(event) {
@@ -39,6 +38,7 @@ $(document).ready(function() {
         $(currentPositionOne).removeClass("active");
         $(currentPositionOne).next().addClass("active");
           if ((currentPositionOne.next().length) === 0) {
+            console.log("done")
             endTime = Date.now();
             var elapsedTime = (endTime - initialTime)/1000;
             var winner = playerOne;
@@ -48,6 +48,7 @@ $(document).ready(function() {
             var data = {winner: playerOne, elapsed_time: elapsedTime}
             $.post('/board', data, function(serverResponse, status, request) {
               gameId = serverResponse;
+              // window.location.href = "/view_stats/"+gameId;
             })
 
             $('#play-again').html("<button id='play'>Play again?</button>");
@@ -84,9 +85,7 @@ $(document).ready(function() {
             $(currentPositionOne).removeClass("active");
 
             var data = {winner: playerTwo, elapsed_time: elapsedTime}
-            $.post('/board', data, function(serverResponse, status, request) {
-              // console.log(data);
-            })
+            $.post('/board', data)
 
             $('#play-again').html("<button id='play'>Play again?</button>");
               $('#play').on('click', function() {

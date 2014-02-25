@@ -8,6 +8,6 @@ post '/' do
   player = Player.find_or_create_by(username: params[:username])
   if player
     session[:player_one] = player.id
-    redirect to ('/sign_in_player_two')
+    200
   end
 end

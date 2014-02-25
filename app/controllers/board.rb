@@ -1,7 +1,7 @@
 get '/board' do
   # game = Game.find_or_create_by
   # racer = Racer.find_or_create_by
-
+  p session
   erb :board
 end
 
