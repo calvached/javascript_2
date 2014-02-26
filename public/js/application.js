@@ -56,24 +56,24 @@ $(document).ready(function() {
     });
     $('#play-again').show();
     $('#view-stats').show();
+    $('#stats-container').hide();
   };
 
   $('#play').on('click', function() {
     console.log("Play Clicked");
     $('#winner_1').addClass('display-none');
     $('#winner_2').addClass('display-none');
-    $('#play').hide();
     $('#player1_strip td:first-child').addClass("active");
     $('#player2_strip td:first-child').addClass("active");
+    $('#play-again').hide();
     $('#view-stats').hide();
+    // $('#view-stats').remove();
     initialTime = 0;
   });
 
   $('#view').on('click', function() {
-    console.log("View Clicked");
     $.get('/view_stats/' + gameId, function(serverResponse, status, request){
-      console.log("View Stats Returned");
-      $('#view-stats').html(serverResponse);
+      $('#view-stats').append(serverResponse);
     });
   });
 
@@ -81,8 +81,6 @@ $(document).ready(function() {
   console.log("Keyup binding created");
   $(document).on("keyup", function(event) {
 
-    // I suspect this will break
-    // Use this instead typeof(asfgf) == "undefined"
     if(typeof(initialTime) == "undefined" || initialTime === 0) {
       initialTime = Date.now();
     }

@@ -1,7 +1,7 @@
 get '/board' do
   # game = Game.find_or_create_by
   # racer = Racer.find_or_create_by
-  p session
+  # p session
   erb :board
 end
 
@@ -18,7 +18,8 @@ end
 
 get '/view_stats/:id' do
   @game = Game.find(params[:id])
-
+  puts '============================================'
+  p @game.id
   if request.xhr?
     erb :view_stats, layout: false
   end
