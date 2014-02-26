@@ -20,6 +20,6 @@ get '/view_stats/:id' do
   @game = Game.find(params[:id])
 
   if request.xhr?
-    erb :view_stats
+    erb :view_stats, layout: false
   end
 end
